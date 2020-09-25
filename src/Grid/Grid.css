@@ -1,0 +1,43 @@
+.game-header {
+    margin-bottom: 16px;
+}
+
+.game-header__title {
+    margin-right: 8px;
+}
+
+.game-cell {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border: 2px solid grey;
+}
+
+.game-cell_alive {
+    background: black;
+}
+
+.game-cell_dead {
+    background: white;
+}
+
+.test {
+    background: orange;
+}
+
+.button {
+    width: 60px;
+    border: 1px solid black;
+}
+
+.button-start {
+    background-color: lightgreen;
+}
+
+.button-stop {
+    background-color: lightpink;
+}
+
+.button-start, .button-stop {
+    margin-right: 5px;
+}

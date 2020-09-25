@@ -1,0 +1,9 @@
+const STATUS_ALIVE = 1;
+const STATUS_DEAD = 0;
+const DEFAULT_DIMENSION = 50;
+
+export {
+    STATUS_ALIVE,
+    STATUS_DEAD,
+    DEFAULT_DIMENSION
+}
