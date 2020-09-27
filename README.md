@@ -21,3 +21,4 @@ or
 ## Flow typing
 To check Flow coverage use
 ### `flow`
+(must be preinstalled)
