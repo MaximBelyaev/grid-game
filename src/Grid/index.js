@@ -1,25 +1,26 @@
 // @flow
-import React, {useState, useRef, Node} from 'react';
+import React, { useState, useRef } from 'react';
 import './Grid.css';
 import { STATUS_ALIVE, STATUS_DEAD, GAME_TICK_INTERVAL_MS } from '../constants';
 import cloneDeep from 'lodash.clonedeep';
 import Cell from '../Cell';
-import {createEmptyGrid} from "../helpers/gridHelper";
+import { createEmptyGrid } from "../helpers/gridHelper";
+import type { Node } from 'react';
 
-export type GridStructure = Array<Array>;
+export type GridStructure = Array<Array<number>>;
 
 type Props = {
     grid: GridStructure,
 }
 
 const Grid = ( { grid: initialGrid }: Props): Node => {
-    const [grid, setGrid] = useState(initialGrid);
+    const [grid, setGrid] = useState<GridStructure>(initialGrid);
     // Dimension could be passed here through props as a number or object like { rows: n, cols: n } if rows !== cols.
     // I decided that grid.length is ok for test task
     const dimension = grid.length;
 
     const [isRunning, setIsRunning] = useState<boolean>(false);
-    const runner = useRef(NaN);
+    const runner = useRef<IntervalID | null>(null);
     const neighbourIndexes = [
         [-1, -1],
         [1, 0],

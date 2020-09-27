@@ -1,7 +1,8 @@
 // @flow
-import React, {Node} from 'react';
+import React from 'react';
 import './Cell.css';
 import { STATUS_ALIVE } from '../constants';
+import type { AbstractComponent } from 'react';
 
 type Props = {
     rowIndex: number,
@@ -12,7 +13,7 @@ type Props = {
 
 export const getCellClass = (value: number): string => value === STATUS_ALIVE ? 'game-cell_alive' :'game-cell_dead';
 
-const Cell = ({ rowIndex, colIndex, value, onClick }: Props): Node => {
+const Cell = ({ rowIndex, colIndex, value, onClick }: Props): React$Node => {
     const handleCellClick = (): void => {
         onClick(rowIndex, colIndex, value)
     }
@@ -25,4 +26,4 @@ const Cell = ({ rowIndex, colIndex, value, onClick }: Props): Node => {
     );
 }
 
-export default React.memo(Cell);
+export default (React.memo<Props>(Cell): AbstractComponent<Props>);
