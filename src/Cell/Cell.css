@@ -1,8 +1,8 @@
 .game-cell {
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    border: 2px solid grey;
+    width: 3px;
+    height: 3px;
+    display: flex;
+    border: 1px solid grey;
 }
 
 .game-cell_alive {
@@ -11,4 +11,26 @@
 
 .game-cell_dead {
     background: white;
+}
+
+
+@media (min-width: 505px) {
+    .game-cell {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+@media (min-width: 717px) {
+    .game-cell {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+@media (min-width: 971px) {
+    .game-cell {
+        width: 15px;
+        height: 15px;
+    }
 }

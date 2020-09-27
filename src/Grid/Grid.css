@@ -6,6 +6,12 @@
     margin-right: 8px;
 }
 
+.game-grid {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
 .test {
     background: orange;
 }

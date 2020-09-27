@@ -99,25 +99,26 @@ const Grid = ( { grid: initialGrid }: Props): Node => {
                 }
                 <button className='button' id='clear-button' onClick={handleClearButtonClick} disabled={isRunning}>Clear</button>
             </div>
-            {
-                grid.map((row, rowIndex) => (
-                    <div key={`${rowIndex}`}>
-                        {
-                            row.map((value, colIndex) => {
-                                return (
-                                    <Cell
-                                        rowIndex={rowIndex}
-                                        colIndex={colIndex}
-                                        value={value}
-                                        key={`${rowIndex}-${colIndex}`}
-                                        onClick={handleCellClick}
-                                    />
-                                )
-                            })
-                        }
-                    </div>
-                ))
-            }
+            <div className='game-grid'>
+                {
+                    grid.map((row, rowIndex) => (
+                        <div key={`${rowIndex}`}>
+                            {
+                                row.map((value, colIndex) => {
+                                    return (
+                                        <Cell
+                                            rowIndex={rowIndex}
+                                            colIndex={colIndex}
+                                            value={value}
+                                            key={`${rowIndex}-${colIndex}`}
+                                            onClick={handleCellClick}
+                                        />)
+                                })
+                            }
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     );
 }

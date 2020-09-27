@@ -1,9 +1,11 @@
+// @flow
 import React from 'react';
 import './App.css';
 import { DEFAULT_DIMENSION } from './constants';
 import Grid from "./Grid";
+import type { Node } from 'react';
 
-const App = () => {
+const App = (): Node => {
     const grid = new Array(DEFAULT_DIMENSION);
 
     for (let i = 0; i < grid.length; i++) {

@@ -15,7 +15,7 @@ export const getCellClass = (value: number): string => value === STATUS_ALIVE ? 
 
 const Cell = ({ rowIndex, colIndex, value, onClick }: Props): React$Node => {
     const handleCellClick = (): void => {
-        onClick(rowIndex, colIndex, value)
+        onClick(rowIndex, colIndex, value);
     }
 
     return (
