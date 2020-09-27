@@ -78,9 +78,10 @@ const Grid = ( { grid: initialGrid }: Props): Node => {
         clearInterval(runner.current);
     }
 
-    const handleCellClick = (row: number, column: number, value: number): void => {
+    const handleCellClick = ({target}: SyntheticEvent<HTMLDivElement>): void => {
+        const { 'data-row': { value: row }, 'data-col': { value : col }, 'data-value': { value }} = target.attributes;
         const newGrid = [...grid];
-        newGrid[row][column] = value ? STATUS_DEAD : STATUS_ALIVE;
+        newGrid[row][col] = Number(value) ? STATUS_DEAD : STATUS_ALIVE;
         setGrid(newGrid);
     }
 
@@ -99,10 +100,10 @@ const Grid = ( { grid: initialGrid }: Props): Node => {
                 }
                 <button className='button' id='clear-button' onClick={handleClearButtonClick} disabled={isRunning}>Clear</button>
             </div>
-            <div className='game-grid'>
+            <div className='game-grid' onClick={handleCellClick}>
                 {
                     grid.map((row, rowIndex) => (
-                        <div key={`${rowIndex}`}>
+                        <div className='game-grid__row' key={`${rowIndex}`}>
                             {
                                 row.map((value, colIndex) => {
                                     return (
@@ -111,7 +112,6 @@ const Grid = ( { grid: initialGrid }: Props): Node => {
                                             colIndex={colIndex}
                                             value={value}
                                             key={`${rowIndex}-${colIndex}`}
-                                            onClick={handleCellClick}
                                         />)
                                 })
                             }
