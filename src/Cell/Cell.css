@@ -1,0 +1,14 @@
+.game-cell {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border: 2px solid grey;
+}
+
+.game-cell_alive {
+    background: black;
+}
+
+.game-cell_dead {
+    background: white;
+}
