@@ -81,7 +81,7 @@ const Grid = ( { grid: initialGrid }: Props): Node => {
     // Flow doesn't know about Synthetic Events's  EventTarget's `attributes`
     const handleCellClick = ({ target }: Object): void => {
         const { 'data-row': { value: row }, 'data-col': { value : col }, 'data-value': { value }} = target.attributes;
-        const newGrid = [...grid];
+        const newGrid = cloneDeep(grid);
         newGrid[row][col] = Number(value) ? STATUS_DEAD : STATUS_ALIVE;
         setGrid(newGrid);
     }
