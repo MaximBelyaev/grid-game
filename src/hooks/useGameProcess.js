@@ -12,15 +12,12 @@ import {
     NEIGHBOURS_INDEXES
 } from '../constants';
 
-import type { GridStructure, HandleCellClick } from '../types';
+import type { GridStructure, HandleCellClick, IsRunning, HandleClearButtonClick, HandleStartButtonClick,
+    HandleStopButtonClick} from '../types';
 
 type Props = {
     initialGrid: GridStructure
 }
-type HandleClearButtonClick = () => void;
-type HandleStartButtonClick = () => void;
-type HandleStopButtonClick = () => void;
-type IsRunning = boolean;
 
 type GameProcess = {
     grid: GridStructure,
@@ -33,36 +30,36 @@ type GameProcess = {
 }
 
 const useGameProcess = (props: Props): GameProcess => {
-    const { initialGrid } = props;
+    const {initialGrid} = props;
     const [grid, setGrid] = useState<GridStructure>(initialGrid);
     const dimension = grid.length;
     const [isRunning, setIsRunning] = useState<IsRunning>(false);
     const runner = useRef<IntervalID | null>(null);
 
     const processGameTick = useCallback(() => {
-        setGrid(grid => {
-            const newGrid = cloneDeep(grid);
+        setGrid(grid =>
+            grid.map((row, rowIndex) =>
+                row.map((value, colIndex) => {
+                        const neighbours =
+                            NEIGHBOURS_INDEXES.reduce((currentCount, [neighbourRowOffset, neighbourColOffset]) => {
+                                const neighbourRowIndex = rowIndex + neighbourRowOffset;
+                                const neighbourColIndex = colIndex + neighbourColOffset;
+                                return neighbourRowIndex >= 0 && neighbourColIndex >= 0 && neighbourRowIndex < dimension &&
+                                neighbourColIndex < dimension && grid[neighbourRowIndex][neighbourColIndex] === STATUS_ALIVE ?
+                                    ++currentCount : currentCount;
+                            }, 0);
 
-            grid.forEach((row, rowIndex)=> {
-                row.forEach((value, colIndex) => {
-                    const neighbours = NEIGHBOURS_INDEXES.reduce((currentCount, [neighbourRowOffset, neighbourColOffset]) => {
-                        const neighbourRowIndex = rowIndex + neighbourRowOffset;
-                        const neighbourColIndex = colIndex + neighbourColOffset;
-                        return neighbourRowIndex >= 0 && neighbourColIndex >= 0 && neighbourRowIndex < dimension && neighbourColIndex < dimension
-                            && grid[neighbourRowIndex][neighbourColIndex] === STATUS_ALIVE ? ++currentCount : currentCount;
-                    }, 0);
+                        if (neighbours < MIN_POPULATION_LIMIT || neighbours > CROWDING_LIMIT) {
+                            return STATUS_DEAD;
+                        } else if (neighbours === REPRODUCTION_QUANTITY) {
+                            return STATUS_ALIVE;
+                        }
 
-                    if (neighbours < MIN_POPULATION_LIMIT || neighbours > CROWDING_LIMIT) {
-                        newGrid[rowIndex][colIndex] = STATUS_DEAD;
+                        return value;
                     }
-                    if (neighbours === REPRODUCTION_QUANTITY) {
-                        newGrid[rowIndex][colIndex] = STATUS_ALIVE;
-                    }
-                })
-            })
-
-            return newGrid;
-        })
+                )
+            )
+        )
     }, [dimension]);
 
     const handleStartButtonClick = useCallback((): void => {
@@ -75,9 +72,8 @@ const useGameProcess = (props: Props): GameProcess => {
         clearInterval(runner.current);
     }, []);
 
-    // Flow doesn't know about Synthetic Events's  EventTarget's `attributes`
-    const handleCellClick = useCallback(({ target }: Object): void => {
-        const { 'data-row': row , 'data-col': col, 'data-value': valueAttr} = target.attributes;
+    const handleCellClick = useCallback(({target}: Object): void => {
+        const {'data-row': row, 'data-col': col, 'data-value': valueAttr} = target.attributes;
 
         if (row && col && valueAttr) {
             const newGrid = cloneDeep(grid);
@@ -87,12 +83,16 @@ const useGameProcess = (props: Props): GameProcess => {
     }, [grid]);
 
     const handleClearButtonClick = useCallback(
-        (): void => {setGrid(() => createGrid(dimension))},
+        (): void => {
+            setGrid(() => createGrid(dimension))
+        },
         [dimension]
     )
 
-    return { grid, setGrid, handleCellClick, handleClearButtonClick, handleStartButtonClick, handleStopButtonClick,
-    isRunning };
+    return {
+        grid, setGrid, handleCellClick, handleClearButtonClick, handleStartButtonClick, handleStopButtonClick,
+        isRunning
+    };
 };
 
 export default useGameProcess;
