@@ -1,18 +1,22 @@
-import { createEmptyGrid } from '../gridHelper';
+import { createGrid } from '../gridHelper';
 
-describe('createEmptyGrid', () => {
-    test('creates 3x3 empty grid structure correctly', () => {
-        expect(createEmptyGrid(3)).toMatchObject([
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
+describe('createGrid', () => {
+    const dimension = 2;
+    test(`creates ${dimension}x${dimension} empty grid structure correctly`, () => {
+        const value = 2;
+        const valueCallback = () => value;
+        expect(createGrid(dimension, valueCallback)).toMatchObject([
+            [value, value],
+            [value, value],
         ])
     })
 
-    test('creates 50x50 empty grid structure without passing parameters', () => {
+    const emptyGridDimension = 50;
+    const result = 2550;
+    test(`creates ${emptyGridDimension}x${emptyGridDimension} empty grid structure without passing parameters`, () => {
         let valuesNumber = 0;
-        createEmptyGrid().forEach(array => valuesNumber += array.length + 1)
+        createGrid().forEach(array => valuesNumber += array.length + 1)
 
-        expect(valuesNumber).toBe(2550)
+        expect(valuesNumber).toBe(result)
     })
 })

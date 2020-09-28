@@ -3,6 +3,8 @@ import React from 'react';
 import Button from "../Button";
 import './GameHeader.css';
 
+import type { AbstractComponent } from "react";
+
 type Props = {
     title: string,
     isRunning: boolean,
@@ -29,4 +31,4 @@ const GameHeader = (props: Props) => {
     )
 }
 
-export default React.memo(GameHeader);
+export default (React.memo<Props>(GameHeader): AbstractComponent<Props>);

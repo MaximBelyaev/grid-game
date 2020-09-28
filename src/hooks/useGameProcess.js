@@ -12,16 +12,31 @@ import {
     NEIGHBOURS_INDEXES
 } from '../constants';
 
-import type { GridStructure } from '../types';
+import type { GridStructure, HandleCellClick } from '../types';
 
-const useGameProcess = (props) => {
+type Props = {
+    initialGrid: GridStructure
+}
+type HandleClearButtonClick = () => void;
+type HandleStartButtonClick = () => void;
+type HandleStopButtonClick = () => void;
+type IsRunning = boolean;
+
+type GameProcess = {
+    grid: GridStructure,
+    setGrid: GridStructure => void,
+    handleCellClick: HandleCellClick,
+    handleClearButtonClick: HandleClearButtonClick,
+    handleStartButtonClick: HandleStartButtonClick,
+    handleStopButtonClick: HandleStopButtonClick,
+    isRunning: IsRunning,
+}
+
+const useGameProcess = (props: Props): GameProcess => {
     const { initialGrid } = props;
     const [grid, setGrid] = useState<GridStructure>(initialGrid);
-
-    // Dimension could be passed here through props as a number or object like { rows: n, cols: n } if rows !== cols.
-    // I decided that grid.length is ok for test task
     const dimension = grid.length;
-    const [isRunning, setIsRunning] = useState<boolean>(false);
+    const [isRunning, setIsRunning] = useState<IsRunning>(false);
     const runner = useRef<IntervalID | null>(null);
 
     const processGameTick = useCallback(() => {
@@ -62,10 +77,13 @@ const useGameProcess = (props) => {
 
     // Flow doesn't know about Synthetic Events's  EventTarget's `attributes`
     const handleCellClick = useCallback(({ target }: Object): void => {
-        const { 'data-row': { value: row }, 'data-col': { value : col }, 'data-value': { value }} = target.attributes;
-        const newGrid = cloneDeep(grid);
-        newGrid[row][col] = Number(value) ? STATUS_DEAD : STATUS_ALIVE;
-        setGrid(newGrid);
+        const { 'data-row': row , 'data-col': col, 'data-value': valueAttr} = target.attributes;
+
+        if (row && col && valueAttr) {
+            const newGrid = cloneDeep(grid);
+            newGrid[row.value][col.value] = Number(valueAttr.value) === STATUS_ALIVE ? STATUS_DEAD : STATUS_ALIVE;
+            setGrid(newGrid);
+        }
     }, [grid]);
 
     const handleClearButtonClick = useCallback(

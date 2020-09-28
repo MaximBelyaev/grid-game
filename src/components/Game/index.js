@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
-import './Game.css';
 import Grid from "../Grid";
+import GameHeader from "../GameHeader";
 import useGameProcess from "../../hooks/useGameProcess";
 
 import type { Node } from 'react';
 import type { GridStructure } from '../../types';
-import GameHeader from "../GameHeader";
 
 type Props = {
     grid: GridStructure,
@@ -25,6 +24,7 @@ const Game = ( { grid: initialGrid }: Props): Node => {
     return (
         <>
             <GameHeader
+                title='Choose cells you want to start your game with and click Start button.'
                 isRunning={isRunning}
                 handleStopButtonClick={handleStopButtonClick}
                 handleStartButtonClick={handleStartButtonClick}
