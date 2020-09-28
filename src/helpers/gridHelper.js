@@ -1,15 +1,17 @@
 // @flow
+import { DEFAULT_DIMENSION, STATUS_DEAD} from "../constants";
+import type { GridStructure } from '../types';
 
-import type { GridStructure } from '../Grid';
-import {DEFAULT_DIMENSION} from "../constants";
+const emptyGridCallback = () => STATUS_DEAD;
+const randomGridCallback = () => Math.round(Math.random());
 
-const createEmptyGrid = (dimension: number = DEFAULT_DIMENSION): GridStructure => {
+const createGrid = (dimension: number = DEFAULT_DIMENSION, valueCallback = emptyGridCallback): GridStructure => {
     const grid = new Array(dimension);
     for (let i = 0; i < grid.length; i++) {
-        grid[i] = Array.from({length: dimension}, () => 0);
+        grid[i] = Array.from({ length: dimension }, valueCallback);
     }
 
     return grid;
 }
 
-export { createEmptyGrid };
+export { emptyGridCallback, randomGridCallback, createGrid };

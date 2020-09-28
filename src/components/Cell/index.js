@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
 import './Cell.css';
-import { STATUS_ALIVE } from '../constants';
+import { STATUS_ALIVE } from '../../constants';
+
 import type { AbstractComponent } from 'react';
 
 type Props = {

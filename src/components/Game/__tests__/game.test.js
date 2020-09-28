@@ -1,17 +1,20 @@
 import React from 'react';
-import {mount} from 'enzyme';
-import Grid from '../';
-import { STATUS_ALIVE, STATUS_DEAD, GAME_TICK_INTERVAL_MS } from '../../constants';
-import { createEmptyGrid } from "../../helpers/gridHelper";
-import Cell from "../../Cell";
+import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
+import Game from '../';
+import { STATUS_ALIVE, STATUS_DEAD, GAME_TICK_INTERVAL_MS } from '../../../constants';
+import { createGrid } from "../../../helpers/gridHelper";
+import Cell from "../../Cell";
 
-describe('Grid tests', () => {
-    describe('empty grid 25x25', () => {
-        const wrapper = mount(<Grid grid={createEmptyGrid(25)} />);
+describe('Game tests', () => {
+    const exampleDimension = 25;
+    const cellsNumberResult = 625;
+
+    describe(`empty grid ${exampleDimension}x${exampleDimension}`, () => {
+        const wrapper = mount(<Game grid={createGrid(exampleDimension)} />);
 
         test('renders correct number of cells', () => {
-            expect(wrapper.find(Cell)).toHaveLength(625);
+            expect(wrapper.find(Cell)).toHaveLength(cellsNumberResult);
         });
     })
 
@@ -22,7 +25,7 @@ describe('Grid tests', () => {
                 [0, 1, 0],
                 [0, 0, 0],
             ];
-            const wrapper = mount(<Grid grid={grid} />);
+            const wrapper = mount(<Game grid={grid} />);
 
             wrapper.findWhere(node => node.type() === Cell && node.prop('value') === STATUS_ALIVE).simulate('click');
             const updatedAliveCell = wrapper.findWhere(node => node.type() === Cell
@@ -31,7 +34,7 @@ describe('Grid tests', () => {
         })
 
         test('dead cell: status is changed to alive', () => {
-            const wrapper = mount(<Grid grid={createEmptyGrid()} />);
+            const wrapper = mount(<Game grid={createGrid()} />);
 
             wrapper.find(Cell).first().simulate('click');
             expect(wrapper.find(Cell).first().prop('value')).toBe(STATUS_ALIVE);
@@ -44,13 +47,17 @@ describe('Grid tests', () => {
             [0, 1, 0],
             [0, 0, 0],
         ];
-        const wrapper = mount(<Grid grid={grid} />);
-        wrapper.find('#clear-button').simulate('click');
+        const wrapper = mount(<Game grid={grid} />);
+        wrapper.find('button#clear-button').simulate('click');
         expect(wrapper.findWhere(node => node.type() === Cell && node.prop('value') === STATUS_ALIVE)).toHaveLength(0);
     })
 
     describe('game process', () => {
         jest.useFakeTimers();
+
+        const start = (wrapper) => {
+            wrapper.find('button#start-button').simulate('click');
+        }
 
         const testCellValue = (rowIndex, colIndex, wrapper, result) => {
             const value = wrapper.findWhere(node => node.type() === Cell && node.prop('rowIndex') === rowIndex && node.prop('colIndex') === colIndex).prop('value');
@@ -68,10 +75,9 @@ describe('Grid tests', () => {
                 [0, 0, 0],
                 [0, 0, 0],
             ];
-            const wrapper = mount(<Grid grid={grid} />);
+            const wrapper = mount(<Game grid={grid} />);
             act(() => {
-                wrapper.find('#start-button').simulate('click');
-
+                start(wrapper);
                 runIntervalTick(wrapper);
                 testCellValue(0, 0, wrapper, STATUS_DEAD);
                 testCellValue(0, 1, wrapper, STATUS_DEAD);
@@ -84,10 +90,9 @@ describe('Grid tests', () => {
                 [0, 1, 0],
                 [0, 0, 0],
             ];
-            const wrapper = mount(<Grid grid={grid} />);
+            const wrapper = mount(<Game grid={grid} />);
             act(() => {
-                wrapper.find('#start-button').simulate('click');
-
+                start(wrapper);
                 runIntervalTick(wrapper);
                 testCellValue(0, 0, wrapper, STATUS_ALIVE);
                 testCellValue(0, 1, wrapper, STATUS_ALIVE);
@@ -102,10 +107,9 @@ describe('Grid tests', () => {
                 [0, 1, 1],
                 [0, 0, 0],
             ];
-            const wrapper = mount(<Grid grid={grid} />);
+            const wrapper = mount(<Game grid={grid} />);
             act(() => {
-                wrapper.find('#start-button').simulate('click');
-
+                start(wrapper);
                 runIntervalTick(wrapper);
                 testCellValue(1, 1, wrapper, STATUS_DEAD);
             })
@@ -117,10 +121,9 @@ describe('Grid tests', () => {
                 [0, 0, 0],
                 [0, 0, 0],
             ];
-            const wrapper = mount(<Grid grid={grid} />);
+            const wrapper = mount(<Game grid={grid} />);
             act(() => {
-                wrapper.find('#start-button').simulate('click');
-
+                start(wrapper);
                 runIntervalTick(wrapper);
                 testCellValue(1, 1, wrapper, STATUS_ALIVE);
             })
@@ -134,9 +137,9 @@ describe('Grid tests', () => {
                 [0, 0, 1, 0, 0],
                 [0, 0, 0, 0, 0],
             ];
-            const wrapper = mount(<Grid grid={grid} />);
+            const wrapper = mount(<Game grid={grid} />);
             act(() => {
-                wrapper.find('#start-button').simulate('click');
+                start(wrapper);
 
                 runIntervalTick(wrapper);
                 testCellValue(2, 1, wrapper, STATUS_ALIVE);
@@ -163,9 +166,9 @@ describe('Grid tests', () => {
                 [0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0],
             ];
-            const wrapper = mount(<Grid grid={grid} />);
+            const wrapper = mount(<Game grid={grid} />);
             act(() => {
-                wrapper.find('#start-button').simulate('click');
+                start(wrapper);
 
                 runIntervalTick(wrapper);
                 testCellValue(1, 3, wrapper, STATUS_ALIVE);
@@ -174,7 +177,6 @@ describe('Grid tests', () => {
                 testCellValue(2, 1, wrapper, STATUS_ALIVE);
                 testCellValue(3, 1, wrapper, STATUS_ALIVE);
                 testCellValue(4, 2, wrapper, STATUS_ALIVE);
-
 
                 runIntervalTick(wrapper);
                 testCellValue(2, 2, wrapper, STATUS_ALIVE);

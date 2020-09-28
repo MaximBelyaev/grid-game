@@ -2,10 +2,27 @@ const STATUS_ALIVE = 1;
 const STATUS_DEAD = 0;
 const DEFAULT_DIMENSION = 50;
 const GAME_TICK_INTERVAL_MS = 1000;
+const REPRODUCTION_QUANTITY = 3;
+const CROWDING_LIMIT = 3;
+const MIN_POPULATION_LIMIT = 2;
+const NEIGHBOURS_INDEXES = [
+    [-1, -1],
+    [1, 0],
+    [-1, 0],
+    [0, -1],
+    [1, 1],
+    [1, -1],
+    [0, 1],
+    [-1, 1],
+];
 
 export {
     STATUS_ALIVE,
     STATUS_DEAD,
     DEFAULT_DIMENSION,
     GAME_TICK_INTERVAL_MS,
+    REPRODUCTION_QUANTITY,
+    CROWDING_LIMIT,
+    MIN_POPULATION_LIMIT,
+    NEIGHBOURS_INDEXES,
 }

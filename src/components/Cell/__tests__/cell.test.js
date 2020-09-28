@@ -1,4 +1,4 @@
-import { STATUS_ALIVE, STATUS_DEAD } from "../../constants";
+import { STATUS_ALIVE, STATUS_DEAD } from "../../../constants";
 import { getCellClass } from "../";
 
 describe('getCellClass', () => {
