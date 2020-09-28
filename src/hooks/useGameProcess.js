@@ -12,8 +12,10 @@ import {
     NEIGHBOURS_INDEXES
 } from '../constants';
 
-import type { GridStructure, HandleCellClick, IsRunning, HandleClearButtonClick, HandleStartButtonClick,
-    HandleStopButtonClick} from '../types';
+import type {
+    GridStructure, HandleCellClick, IsRunning, HandleClearButtonClick, HandleStartButtonClick,
+    HandleStopButtonClick
+} from '../types';
 
 type Props = {
     initialGrid: GridStructure
@@ -29,8 +31,7 @@ type GameProcess = {
     isRunning: IsRunning,
 }
 
-const useGameProcess = (props: Props): GameProcess => {
-    const {initialGrid} = props;
+const useGameProcess = ({ initialGrid }: Props): GameProcess => {
     const [grid, setGrid] = useState<GridStructure>(initialGrid);
     const dimension = grid.length;
     const [isRunning, setIsRunning] = useState<IsRunning>(false);
@@ -40,25 +41,23 @@ const useGameProcess = (props: Props): GameProcess => {
         setGrid(grid =>
             grid.map((row, rowIndex) =>
                 row.map((value, colIndex) => {
-                        const neighbours =
-                            NEIGHBOURS_INDEXES.reduce((currentCount, [neighbourRowOffset, neighbourColOffset]) => {
-                                const neighbourRowIndex = rowIndex + neighbourRowOffset;
-                                const neighbourColIndex = colIndex + neighbourColOffset;
-                                return neighbourRowIndex >= 0 && neighbourColIndex >= 0 && neighbourRowIndex < dimension &&
-                                neighbourColIndex < dimension && grid[neighbourRowIndex][neighbourColIndex] === STATUS_ALIVE ?
-                                    ++currentCount : currentCount;
-                            }, 0);
+                    const neighbours =
+                        NEIGHBOURS_INDEXES.reduce((currentCount, [neighbourRowOffset, neighbourColOffset]) => {
+                            const neighbourRowIndex = rowIndex + neighbourRowOffset;
+                            const neighbourColIndex = colIndex + neighbourColOffset;
+                            return neighbourRowIndex >= 0 && neighbourColIndex >= 0 && neighbourRowIndex < dimension &&
+                            neighbourColIndex < dimension && grid[neighbourRowIndex][neighbourColIndex] === STATUS_ALIVE ?
+                                ++currentCount : currentCount;
+                        }, 0);
 
-                        if (neighbours < MIN_POPULATION_LIMIT || neighbours > CROWDING_LIMIT) {
-                            return STATUS_DEAD;
-                        } else if (neighbours === REPRODUCTION_QUANTITY) {
-                            return STATUS_ALIVE;
-                        }
-
-                        return value;
+                    if (neighbours < MIN_POPULATION_LIMIT || neighbours > CROWDING_LIMIT) {
+                        return STATUS_DEAD;
+                    } else if (neighbours === REPRODUCTION_QUANTITY) {
+                        return STATUS_ALIVE;
                     }
-                )
-            )
+
+                    return value;
+                }))
         )
     }, [dimension]);
 
