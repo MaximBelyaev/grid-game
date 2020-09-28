@@ -11,10 +11,10 @@ type Props = {
 }
 
 const Button = (props: Props) => {
-    const { isDisabled = false, children, className, handleClick, id } = props;
+    const { isDisabled, children, className, onClick, id } = props;
 
     return (
-        <button disabled={isDisabled} className={`button ${className}`} id={id} onClick={handleClick}>
+        <button disabled={isDisabled} className={`button ${className}`} id={id} onClick={onClick}>
             {children}
         </button>
     )

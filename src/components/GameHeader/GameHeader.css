@@ -1,0 +1,11 @@
+.game-header {
+    margin-bottom: 16px;
+}
+
+.game-header__title {
+    margin-right: 8px;
+}
+
+.button-start, .button-stop {
+    margin-right: 5px;
+}

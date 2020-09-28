@@ -1,11 +1,3 @@
-.game-header {
-    margin-bottom: 16px;
-}
-
-.game-header__title {
-    margin-right: 8px;
-}
-
 .game-grid {
     display: inline-block;
 }
@@ -14,12 +6,4 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-}
-
-.test {
-    background: orange;
-}
-
-.button-start, .button-stop {
-    margin-right: 5px;
 }
